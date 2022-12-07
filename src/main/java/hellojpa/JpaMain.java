@@ -29,6 +29,7 @@ public class JpaMain {
 			em.persist(member);
 			
 			//이렇게 할 경우 여기서 insert쿼리가 나감
+			//중요한 것은 flush()시 1차 캐시가 날라가는게 아니라 최신 정보상태를 유지하고 있음
 			em.flush();
 			
 			System.out.println("============");
