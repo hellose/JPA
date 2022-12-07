@@ -22,7 +22,11 @@
 			<property name="hibernate.format_sql" value="true" />
 			<!-- 쿼리에 해당하는 객체 출력해줌 -->
 			<property name="hibernate.use_sql_comments" value="true" />
-			<!--<property name="hibernate.hbm2ddl.auto" value="create" /> -->
+			
+<!-- 			jdbc 배치 업데이트 기능 -->
+<!-- 			<property name="hibernate.jdbc.batch_size" value="10" /> -->
+
+<!-- 			<property name="hibernate.hbm2ddl.auto" value="create" /> -->
 		</properties>
 	</persistence-unit>
 </persistence>
