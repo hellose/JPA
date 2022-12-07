@@ -18,13 +18,16 @@ public class JpaMain {
 
 		try {
 
-			// db에서 조회
-			Member findMember1 = em.find(Member.class, 101L);
-			// 영속성 컨텍스트에서 조회
-			Member findMember2 = em.find(Member.class, 101L);
-
-			System.out.println("findMember1 == findMember2: " + (findMember1 == findMember2));
-
+			Member member1 = new Member(150L, "A");
+			Member member2 = new Member(160L, "B");
+			
+			// 영속
+			em.persist(member1);
+			em.persist(member2);
+			
+			System.out.println("============");
+			
+			// 쓰기 지연 SQL 저장소에 존재하는 쿼리 flush되고 DB commit됨
 			tx.commit();
 
 		} catch (HibernateException e) {
