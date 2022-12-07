@@ -1,7 +1,5 @@
 package hellojpa;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -19,15 +17,20 @@ public class JpaMain {
 		tx.begin();
 
 		try {
-			// JPA는 객체를 중심으로 쿼리 작성하는 미묘한 차이가 있음
-//			List<Member> result = em.createQuery("select m from Member as m", Member.class).getResultList();
-			List<Member> result = em.createQuery("select m from Member as m", Member.class).setFirstResult(5)
-					.setMaxResults(8).getResultList();
-			// persistence.xml의 hibernate.dialect를 다른 db로 바꾸면 자동으로 해당 db에 맞는 쿼리를 날려준다.
 
-			for (Member member : result) {
-				System.out.println(member.toString());
-			}
+			// 비영속
+//			Member member = new Member(4L, "csh");
+
+			// 영속 - 영속성 컨텍스트에 담음
+//			em.persist(member);
+
+			// 준영속 상태 - 영속성 컨텍스트에서 분리
+//			em.detach(member);
+			
+			// 삭제
+//			em.remove(member);
+			
+			// commit()시 영속성 컨텍스트에 담긴 것들이 쿼리로 날라감
 			tx.commit();
 
 		} catch (HibernateException e) {
