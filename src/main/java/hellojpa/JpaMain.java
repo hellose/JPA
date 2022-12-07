@@ -18,16 +18,12 @@ public class JpaMain {
 
 		try {
 
-			Member member1 = new Member(150L, "A");
-			Member member2 = new Member(160L, "B");
-			
-			// 영속
-			em.persist(member1);
-			em.persist(member2);
-			
+			Member member = em.find(Member.class, 150L);
+			//엔티티의 필드 변경 감지 -> 자동으로 db에 update반영된다. 
+			member.setName("ZZZZ");
+
 			System.out.println("============");
 			
-			// 쓰기 지연 SQL 저장소에 존재하는 쿼리 flush되고 DB commit됨
 			tx.commit();
 
 		} catch (HibernateException e) {
