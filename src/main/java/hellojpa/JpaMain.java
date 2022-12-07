@@ -18,12 +18,10 @@ public class JpaMain {
 
 		try {
 			
-			Member member = new Member(101L, "HelloJPA");
-			//영속화
-			em.persist(member);
-			
-			//영속성 컨텍스트 1차 캐시에 저장되어 있기 때문에 db에서 조회하는 select 쿼리가 날라가지 않음
-			Member findMember = em.find(Member.class, 101L);
+			//db에서 조회
+			Member findMember1 = em.find(Member.class, 101L);
+			//영속성 컨텍스트에서 조회
+			Member findMember2 = em.find(Member.class, 101L);
 
 			tx.commit();
 
