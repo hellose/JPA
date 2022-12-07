@@ -22,10 +22,9 @@
 			<property name="hibernate.format_sql" value="true" />
 			<!-- 쿼리에 해당하는 객체 출력해줌 -->
 			<property name="hibernate.use_sql_comments" value="true" />
-			
-<!-- 			jdbc 배치 업데이트 기능 -->
-<!-- 			<property name="hibernate.jdbc.batch_size" value="10" /> -->
 
+            <!-- 데이터베이스 스키마 자동 생성 속성 -->
+			<!-- create (drop후 create), create-drop (create후 drop), update (변경분만 반영. 운영db사용하면 안됨), validate (엔티티와 테이블이 정상 맵핑되었는지만 확인), none(사용하지 않음) -->
 <!-- 			<property name="hibernate.hbm2ddl.auto" value="create" /> -->
 		</properties>
 	</persistence-unit>
