@@ -17,20 +17,14 @@ public class JpaMain {
 		tx.begin();
 
 		try {
-
-			// 비영속
-//			Member member = new Member(4L, "csh");
-
-			// 영속 - 영속성 컨텍스트에 담음
-//			em.persist(member);
-
-			// 준영속 상태 - 영속성 컨텍스트에서 분리
-//			em.detach(member);
 			
-			// 삭제
-//			em.remove(member);
+			Member member = new Member(101L, "HelloJPA");
+			//영속화
+			em.persist(member);
 			
-			// commit()시 영속성 컨텍스트에 담긴 것들이 쿼리로 날라감
+			//영속성 컨텍스트 1차 캐시에 저장되어 있기 때문에 db에서 조회하는 select 쿼리가 날라가지 않음
+			Member findMember = em.find(Member.class, 101L);
+
 			tx.commit();
 
 		} catch (HibernateException e) {
