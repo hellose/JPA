@@ -17,11 +17,13 @@ public class JpaMain {
 		tx.begin();
 
 		try {
-			
-			//db에서 조회
+
+			// db에서 조회
 			Member findMember1 = em.find(Member.class, 101L);
-			//영속성 컨텍스트에서 조회
+			// 영속성 컨텍스트에서 조회
 			Member findMember2 = em.find(Member.class, 101L);
+
+			System.out.println("findMember1 == findMember2: " + (findMember1 == findMember2));
 
 			tx.commit();
 
