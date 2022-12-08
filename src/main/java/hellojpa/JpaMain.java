@@ -21,7 +21,10 @@ public class JpaMain {
 
 			Member member = new Member();
 
+			System.out.println("================");
+			// IDENTITY전략 - 자동으로 설정될 값을 모르기 떄문에 db에 쿼리를 날려서 값을 셋팅하고 셋팅된 값을 받아오게됨
 			em.persist(member);
+			System.out.println("id: " + member.getId());
 			System.out.println("================");
 
 			tx.commit();
