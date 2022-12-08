@@ -1,31 +1,40 @@
 package hellojpa;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.hibernate.HibernateException;
 
 public class JpaMain {
+
 	public static void main(String[] args) {
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
-//		EntityManager em = emf.createEntityManager();
+		EntityManager em = emf.createEntityManager();
 
-//		EntityTransaction tx = em.getTransaction();
-//		tx.begin();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
 
 		try {
 
-		
+			Member member = new Member();
 
-//			tx.commit();
+			em.persist(member);
+			System.out.println("================");
+
+			tx.commit();
 
 		} catch (HibernateException e) {
-//			tx.rollback();
+			tx.rollback();
+
 		} finally {
-//			em.close();
+			em.close();
+
 		}
 
 		emf.close();
 	}
+
 }
