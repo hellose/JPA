@@ -1,8 +1,8 @@
-package hellojpa;
+package jpabook.jpashop.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.Getter;
@@ -13,10 +13,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Member {
+public class Item {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
+	@Column(name = "ITEM_ID")
 	private Long id;
+
+	private String name;
+	private int price;
+	private int stockQuantity;
 
 }
