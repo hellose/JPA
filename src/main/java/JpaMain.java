@@ -17,22 +17,28 @@ public class JpaMain {
 
 		try {
 
-			// 저장
-			Team team = new Team();
-			team.setTeamName("TeamA");
-			em.persist(team);
+			// 팀 두개 생성
+			Team teamA = new Team();
+			teamA.setTeamName("TeamA");
+			em.persist(teamA);
+			em.flush();
+
+			Team teamB = new Team();
+			teamB.setTeamName("TeamB");
+			em.persist(teamB);
+			em.flush();
 
 			Member member = new Member();
 			member.setMemberName("member1");
-			member.setTeam(team);
+			member.setTeam(teamA);
 			em.persist(member);
+			em.flush();
 
-			// 조회
-			Member findMember = em.find(Member.class, member.getMemberId());
-			Team findTeam = findMember.getTeam();
-			System.out.println("findTeam: " + findTeam);
-			
-			//여기서 member, team inert 쿼리 나감
+			// Member의 팀 변경
+			member.setTeam(em.find(Team.class, 2L));
+			em.flush();
+			System.out.println(member.getTeam());
+
 			tx.commit();
 
 		} catch (HibernateException e) {
