@@ -1,7 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +27,11 @@ public class Team {
 
 	@Column(name = "TEAM_NAME")
 	private String teamName;
+
+	// 양방향 맵핑을 위한 List추가
+
+	// 1:N <=> Team:Member
+	// mappedBy = "Member의 Team타입 필드 team"
+	@OneToMany(mappedBy = "team")
+	private List<Member> members = new ArrayList<>();
 }

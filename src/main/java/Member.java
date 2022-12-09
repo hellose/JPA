@@ -27,11 +27,6 @@ public class Member {
 	@Column(name = "MEMBER_NAME")
 	private String memberName;
 
-	// 객체지향적인 설계
-
-	// JPA에게 연관관계를 알려줘야함
-	
-	//N : 1 <=> Member : Team
 	@ManyToOne
 	@JoinColumn(name = "TEAM_ID")
 	private Team team;
