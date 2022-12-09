@@ -16,17 +16,23 @@ public class JpaMain {
 		tx.begin();
 
 		try {
-			Team team = new Team(1L, "TeamA");
+
+			// 저장
+			Team team = new Team();
+			team.setTeamName("TeamA");
 			em.persist(team);
 
-			// TEAM_ID 외래키를 코드로 직접 셋팅 -> 개발자의 실수로 이상한 값이 들어갈 가능성 존재
-			Member member = new Member(1L, "member1", team.getTeamId());
+			Member member = new Member();
+			member.setMemberName("member1");
+			member.setTeam(team);
 			em.persist(member);
 
-			Long teamId = member.getTeamId();
-			Team findTeam = em.find(Team.class, teamId);
-			System.out.println("Team 정보: " + findTeam);
-
+			// 조회
+			Member findMember = em.find(Member.class, member.getMemberId());
+			Team findTeam = findMember.getTeam();
+			System.out.println("findTeam: " + findTeam);
+			
+			//여기서 member, team inert 쿼리 나감
 			tx.commit();
 
 		} catch (HibernateException e) {
