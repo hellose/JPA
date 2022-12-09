@@ -1,5 +1,3 @@
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -19,25 +17,18 @@ public class JpaMain {
 
 		try {
 
-			Team team = new Team();
-			team.setTeamName("TeamA");
-			em.persist(team);
-
 			Member member = new Member();
 			member.setMemberName("member1");
-			member.setTeam(team);
 			em.persist(member);
 
-			// flush(), clear()해야 양방향 관계 맵핑 테스트를 정확히 확인할 수 있음
+			Team team = new Team();
+			team.setTeamName("TeamA");
+			// 연관관계의 주인이 아닌 Team객체의 members필드에 대입했을 때
+			team.getMembers().add(member);
+			em.persist(team);
+
 			em.flush();
 			em.clear();
-
-			Member findMember = em.find(Member.class, member.getMemberId());
-			List<Member> members = findMember.getTeam().getMembers();
-
-			for (Member m : members) {
-				System.out.println("멤버: " + m.getMemberId() + ", " + m.getMemberName());
-			}
 
 			tx.commit();
 
