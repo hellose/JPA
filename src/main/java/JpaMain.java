@@ -3,8 +3,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import org.hibernate.HibernateException;
-
 public class JpaMain {
 
 	public static void main(String[] args) {
@@ -16,23 +14,29 @@ public class JpaMain {
 		tx.begin();
 
 		try {
+			Team team = new Team();
+			team.setTeamName("TeamA");
+			em.persist(team);
 
 			Member member = new Member();
 			member.setMemberName("member1");
+			
+			// 연관관계의 주인에 값을 설정
+			member.setTeam(team);
 			em.persist(member);
-
-			Team team = new Team();
-			team.setTeamName("TeamA");
-			// 연관관계의 주인이 아닌 Team객체의 members필드에 대입했을 때
-			team.getMembers().add(member);
-			em.persist(team);
 
 			em.flush();
 			em.clear();
 
+			// 확인
+			Team teamA = em.find(Team.class, 1L);
+			for (Member m : teamA.getMembers()) {
+				System.out.println("멤버: " + m.getMemberId() + ", " + m.getMemberName());
+			}
+
 			tx.commit();
 
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			tx.rollback();
 
 		} finally {
