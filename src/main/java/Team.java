@@ -29,10 +29,11 @@ public class Team {
 	@Column(name = "TEAM_NAME")
 	private String teamName;
 
-	// 양방향 맵핑을 위한 List추가
-
-	// 1:N <=> Team:Member
-	// mappedBy = "Member의 Team타입 필드 team"
 	@OneToMany(mappedBy = "team")
 	private List<Member> members = new ArrayList<>();
+	
+	//OneToMany방향을 위한 편의 메서드 추가
+	public void addMember(Member member) {
+		this.members.add(member);
+	}
 }
