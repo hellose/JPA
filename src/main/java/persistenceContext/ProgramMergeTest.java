@@ -34,7 +34,14 @@ class MergeTestEntity {
 class ProgramMergeTest {
 
 	public static void main(String[] args) {
+//		test1();
+//		test2();
+//		test3();
+//		test4();
+		test5();
+	}
 
+	public static void test1() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
 		EntityManagerAop em = new EntityManagerAop(emf.createEntityManager());
@@ -47,14 +54,14 @@ class ProgramMergeTest {
 			em.persist(entity1);
 
 			MergeTestEntity noPersist = MergeTestEntity.builder().id(1).build();
-			
-			// 현재의 경우 - 1차 캐시에 @Id가 1인 entity1이 존재하므로 entity1에 noPersist의 필드값들을 덮어씌운뒤 entity1 리턴
+
+			// 현재의 경우 - 1차 캐시에 @Id가 1인 entity1이 존재하므로 entity1에 noPersist의 필드값들을 덮어씌운뒤
+			// entity1 리턴
 			// 1차 캐시에 없는 경우 - db에서 조회 후 객체를 만든 뒤 객체에 noPersist의 필드값들을 덮어씌운뒤 해당 객체 리턴
 			// pk를 제외한 모든 필드 null인 상태 -> merge시 모든 컬럼 null로 덮어씌어져 버림
 			MergeTestEntity merged = em.merge(noPersist);
 			System.out.println("entity1 == merged: " + (entity1 == merged));
 			System.out.println("merged.toString(): " + merged.toString());
-			
 
 			tx.commit();
 		} catch (Exception e) {
@@ -66,13 +73,9 @@ class ProgramMergeTest {
 			emf.close();
 		}
 	}
-}
 
-//merge시 db에서 조회하는 경우
-class ProgramMergeTest2 {
-
-	public static void main(String[] args) {
-
+	// merge시 db에서 조회하는 경우
+	public static void test2() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
 		EntityManagerAop em = new EntityManagerAop(emf.createEntityManager());
@@ -81,19 +84,19 @@ class ProgramMergeTest2 {
 		try {
 			tx.begin();
 
-			//merge 테스트를 위한 엔티티 저장 
+			// merge 테스트를 위한 엔티티 저장
 			MergeTestEntity m = MergeTestEntity.builder().id(1).column1("col1").column2("col2").build();
 			em.persist(m);
-			//insert쿼리 db 반영
+			// insert쿼리 db 반영
 			em.flush();
-			//영속성 컨텍스트 날림
+			// 영속성 컨텍스트 날림
 			em.clear();
 			m = null;
-			
+
 			MergeTestEntity t = MergeTestEntity.builder().id(1).column1("컬럼1").column2("컬럼2").build();
 			MergeTestEntity merged = em.merge(t);
 			em.flush();
-			
+
 			tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,13 +107,9 @@ class ProgramMergeTest2 {
 			emf.close();
 		}
 	}
-}
 
-//merge - 마지막 스냅샷 때의 필드 값과 다른 것들만 update에 반영
-class ProgramMergeTest3 {
-
-	public static void main(String[] args) {
-
+	// merge - 마지막 스냅샷 때의 필드 값과 다른 것들만 update에 반영
+	public static void test3() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
 		EntityManagerAop em = new EntityManagerAop(emf.createEntityManager());
@@ -124,7 +123,7 @@ class ProgramMergeTest3 {
 
 			MergeTestEntity noPersist = MergeTestEntity.builder().id(1).column1("col1").column2("col2").build();
 			MergeTestEntity merged = em.merge(noPersist);
-			
+
 			tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -135,15 +134,10 @@ class ProgramMergeTest3 {
 			emf.close();
 		}
 	}
-}
 
-
-//TODO - 정확히 이해필요
-//merge - 인자에 준영속(id가 존재하는 비영속)대신 영속 객체를 넘기는 경우
-class ProgramMergeTest4 {
-
-	public static void main(String[] args) {
-
+	// TODO - 정확히 이해필요
+	// merge - 인자에 준영속(id가 존재하는 비영속)대신 영속 객체를 넘기는 경우
+	public static void test4() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
 		EntityManagerAop em = new EntityManagerAop(emf.createEntityManager());
@@ -154,14 +148,12 @@ class ProgramMergeTest4 {
 
 			MergeTestEntity entity1 = MergeTestEntity.builder().id(1).column1("col1").column2("col2").build();
 			em.persist(entity1);
-			
+
 			entity1.setColumn1("컬럼1");
-			
+
 			MergeTestEntity noPersist = MergeTestEntity.builder().id(1).column1("컬럼1").column2("col2").build();
 			em.merge(noPersist);
-			
-			
-			
+
 			tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -172,9 +164,32 @@ class ProgramMergeTest4 {
 			emf.close();
 		}
 	}
+
+	// 1차 캐시, db 모두 없는 상태에서 merge
+	public static void test5() {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+
+		EntityManagerAop em = new EntityManagerAop(emf.createEntityManager());
+		EntityTransactionAop tx = em.getTransaction();
+
+		try {
+			tx.begin();
+
+			MergeTestEntity noPersist = MergeTestEntity.builder().id(1).build();
+
+			// 1차 캐시에 없음 -> db에서 조회 -> db에도 없음 -> update가 아닌 insert발생
+			MergeTestEntity entity = em.merge(noPersist);
+			System.out.println(entity.toString());
+
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+
+		} finally {
+			em.close();
+			emf.close();
+		}
+	}
+	
 }
-
-
-
-
-
