@@ -1,49 +1,65 @@
 package pub;
-
 import javax.persistence.EntityManager;
 
 public class EntityManagerAop {
-
 	private EntityManager em;
 
 	public EntityManagerAop(EntityManager em) {
 		this.em = em;
 	}
 
+	public <T> T find(Class<T> clz, Object primaryKey) {
+		this.print("before find");
+		T t = em.find(clz, primaryKey);
+		print("after find");
+		return t;
+	}
+
 	public void persist(Object obj) {
-		this.print("before persist");
+		print("before persist");
 		em.persist(obj);
-		this.print("after persist");
+		print("after persist");
 	}
 
 	public void flush() {
-		this.print("before flush");
+		print("before flush");
 		em.flush();
-		this.print("after flush");
+		print("after flush");
 	}
 
 	public void detach(Object obj) {
-		this.print("before detach");
+		print("before detach");
 		em.detach(obj);
-		this.print("after detach");
+		print("after detach");
 	}
 
 	public void remove(Object obj) {
-		this.print("before remove");
+		print("before remove");
 		em.remove(obj);
-		this.print("after remove");
+		print("after remove");
 	}
 
 	public void clear() {
-		this.print("before clear");
+		print("before clear");
 		em.clear();
-		this.print("after clear");
+		print("after clear");
 	}
 
 	public void close() {
-		this.print("before close");
+		print("before close");
 		em.close();
-		this.print("after close");
+		print("after close");
+	}
+	
+	public <T> T merge(T t) {
+		print("before merge");
+		T merged = em.merge(t);
+		print("after merge");
+		return merged;
+	}
+	
+	public boolean contains(Object obj) {
+		return em.contains(obj);
 	}
 
 	public EntityTransactionAop getTransaction() {
@@ -51,11 +67,10 @@ public class EntityManagerAop {
 	}
 
 	public EntityManager getEntityManager() {
-		return this.em;
+		return em;
 	}
 
 	public void print(String str) {
 		System.out.println("=====> " + str);
 	}
-
 }

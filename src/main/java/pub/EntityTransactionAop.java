@@ -1,9 +1,7 @@
 package pub;
-
 import javax.persistence.EntityTransaction;
 
 public class EntityTransactionAop {
-
 	private EntityTransaction tx;
 
 	public EntityTransactionAop(EntityTransaction tx) {
@@ -11,29 +9,28 @@ public class EntityTransactionAop {
 	}
 
 	public void begin() {
-		this.print("before begin");
-		this.tx.begin();
-		this.print("after begin");
+		print("before begin");
+		tx.begin();
+		print("after begin");
 	}
 
 	public void commit() {
-		this.print("before commit");
-		this.tx.commit();
-		this.print("after commit");
+		print("before commit");
+		tx.commit();
+		print("after commit");
 	}
 
 	public void rollback() {
-		this.print("before rollback");
-		this.tx.rollback();
-		this.print("after rollback");
+		print("before rollback");
+		tx.rollback();
+		print("after rollback");
 	}
 
 	public EntityTransaction getTransaction() {
-		return this.tx;
+		return tx;
 	}
 
 	public void print(String str) {
 		System.out.println("=====> " + str);
 	}
-
 }
