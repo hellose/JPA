@@ -1,6 +1,5 @@
 package persistenceContext;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,7 +60,7 @@ class ProgramPersistTest2 {
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+//@Entity
 @Table(name = "sequence_strategy_test_entity")
 @SequenceGenerator(name = "sequence_strategy_test_entity_id_generator", allocationSize = 1, initialValue = 1, sequenceName = "sequence_strategy_test_entity_pk_sequence")
 class SequenceStrategyTestEntity {
