@@ -34,7 +34,7 @@ class Manually {
 	private Integer id;
 }
 
-public class ProgramIdentityStragetyTest {
+class ProgramIdentityStragetyTest {
 
 	public static void main(String[] args) {
 //		test1();
